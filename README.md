@@ -1,32 +1,39 @@
-# efood — exercício EBAC
+# efood
 
-Implementação responsiva do layout efood com React, Styled Components e React Router.
+Projeto desenvolvido durante o exercício da EBAC, a partir do layout do efood no Figma.
 
-## Rodando localmente
+A proposta é criar uma experiência simples para encontrar um restaurante, escolher os pratos e montar um pedido pelo celular ou computador.
+
+## Tecnologias
+
+- React
+- React Router
+- Styled Components
+- Vite
+
+## Como rodar o projeto
+
+Depois de clonar o repositório, instale as dependências e inicie o servidor local:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Para gerar a versão de produção:
+Para testar a versão de produção:
 
 ```bash
 npm run build
 npm run preview
 ```
 
-## Publicando na Vercel
+## O que já está funcionando
 
-1. Suba este projeto para um repositório no GitHub.
-2. Entre em [vercel.com](https://vercel.com) e escolha **Add New Project**.
-3. Importe o repositório e mantenha `npm run build` como comando de build.
-4. Use `dist` como diretório de saída. A configuração em `vercel.json` mantém as rotas do React Router funcionando após o deploy.
+- Busca por restaurante ou categoria
+- Lista de restaurantes em destaque
+- Página com os pratos de cada restaurante
+- Carrinho de compras
+- Resumo e confirmação do pedido
+- Layout adaptado para telas menores
 
-## Rotas disponíveis
-
-- `/` — home com busca e categorias
-- `/restaurant/forno-da-vila` — detalhes do restaurante e produtos
-- `/checkout` — formulário e resumo do pedido
-
-Os restaurantes e produtos são dados mockados para a entrega do exercício e podem ser trocados por uma API posteriormente.
+Por enquanto, os restaurantes e pratos estão cadastrados como dados locais. Assim, o projeto fica fácil de testar e pode receber uma API quando essa etapa fizer sentido.
