@@ -4,12 +4,12 @@ import { BrowserRouter, Link, NavLink, Route, Routes, useLocation, useNavigate, 
 import styled, { createGlobalStyle, css } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800&display=swap');
 
   :root {
     color: #292323;
     background: #fffaf7;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
   }
@@ -101,7 +101,7 @@ const restaurants = [
 ]
 
 const categories = [
-  { label: 'Todos', emoji: '✦' },
+  { label: 'Todos', emoji: '' },
   { label: 'Pizza', emoji: '🍕' },
   { label: 'Hambúrguer', emoji: '🍔' },
   { label: 'Brasileira', emoji: '🍛' },
@@ -174,7 +174,6 @@ const Logo = styled(Link)`
   letter-spacing: -1.2px;
   color: #e94d4d;
   span { color: #292323; }
-  &::before { content: '✦'; font-size: 21px; color: #e94d4d; }
 `
 
 const HeaderNav = styled.nav`
@@ -241,13 +240,12 @@ const HeroLayout = styled(Shell)`
 
 const Eyebrow = styled.div`
   display: inline-flex; align-items: center; gap: 9px; margin-bottom: 21px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.8px; color: ${({ light }) => light ? 'rgba(255,255,255,.82)' : '#e94d4d'};
-  &::before { content: ''; width: 27px; height: 2px; background: currentColor; }
 `
 
 const HeroTitle = styled.h1`
   margin: 0;
   max-width: 560px;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Roboto', sans-serif;
   font-size: clamp(44px, 5vw, 72px);
   line-height: .98;
   letter-spacing: -2.5px;
@@ -278,7 +276,7 @@ const Main = styled.main`
 
 const SectionHeading = styled.div`
   display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 27px;
-  h2 { margin: 0; font-family: 'Playfair Display', serif; font-size: clamp(28px, 3vw, 40px); letter-spacing: -1px; line-height: 1.08; }
+  h2 { margin: 0; font-family: 'Roboto', sans-serif; font-size: clamp(28px, 3vw, 40px); letter-spacing: -1px; line-height: 1.08; }
   p { margin: 8px 0 0; color: #897b75; font-size: 14px; }
   a { color: #e94d4d; font-size: 13px; font-weight: 700; }
 `
@@ -336,7 +334,7 @@ function HomePage() {
             <span aria-hidden="true">⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Busque por restaurante ou prato" aria-label="Buscar" /><button type="submit">Buscar</button>
           </SearchBox>
         </div>
-        <HeroCard src={restaurants[0].cover}><div className="floating">✦ Seleção da casa · 4,8</div></HeroCard>
+          <HeroCard src={restaurants[0].cover}><div className="floating">Seleção da casa · 4,8</div></HeroCard>
       </HeroLayout>
     </Hero>
     <Main id="restaurants"><Shell>
@@ -344,7 +342,7 @@ function HomePage() {
       <CategoryRow>{categories.map((category) => <Category key={category.label} to={category.label === 'Todos' ? '/' : `/?category=${encodeURIComponent(category.label)}`} className={activeCategory === category.label ? 'selected' : ''}><span className="emoji">{category.emoji}</span>{category.label}</Category>)}</CategoryRow>
       <SectionHeading><div><Eyebrow>Para você</Eyebrow><h2>Restaurantes em destaque</h2><p>Os favoritos da vizinhança, escolhidos especialmente para você.</p></div><a href="#restaurants">Ver todos ↗</a></SectionHeading>
       <RestaurantGrid>{filtered.length ? filtered.map((restaurant) => <RestaurantCard key={restaurant.id} src={restaurant.cover}>
-        <Link to={`/restaurant/${restaurant.id}`} aria-label={`Abrir ${restaurant.name}`}><div className="cover"><span className="delivery">{restaurant.delivery === 'Grátis' ? 'Entrega grátis' : restaurant.delivery}</span><button className="heart" type="button" aria-label="Favoritar" onClick={(event) => event.preventDefault()}>♡</button></div><div className="info"><h3>{restaurant.name}</h3><p>{restaurant.description}</p><div className="meta"><span className="rating">★ {restaurant.rating}</span><span>◷ {restaurant.time}</span><span>{restaurant.category}</span></div></div></Link>
+        <Link to={`/restaurant/${restaurant.id}`} aria-label={`Abrir ${restaurant.name}`}><div className="cover"><span className="delivery">{restaurant.delivery === 'Grátis' ? 'Entrega grátis' : restaurant.delivery}</span><button className="heart" type="button" aria-label="Favoritar" onClick={(event) => event.preventDefault()}>♡</button></div><div className="info"><h3>{restaurant.name}</h3><p>{restaurant.description}</p><div className="meta"><span className="rating">{restaurant.rating}</span><span>◷ {restaurant.time}</span><span>{restaurant.category}</span></div></div></Link>
       </RestaurantCard>) : <EmptyState>Nenhum restaurante encontrado. Tente outra busca.</EmptyState>}</RestaurantGrid>
     </Shell></Main>
     <Footer />
@@ -362,7 +360,7 @@ const FooterWrap = styled.footer`
   @media (max-width: 600px) { .footer-inner { align-items: start; flex-direction: column; } }
 `
 
-function Footer() { return <FooterWrap><Shell><div className="footer-inner"><strong>✦ efood</strong><span>Feito para deixar seu dia mais gostoso.</span><span>© 2024 efood</span></div></Shell></FooterWrap> }
+function Footer() { return <FooterWrap><Shell><div className="footer-inner"><strong>efood</strong><span>Feito para deixar seu dia mais gostoso.</span><span>© 2026 efood</span></div></Shell></FooterWrap> }
 
 const DetailHero = styled.section`
   min-height: 390px; display: flex; align-items: end; position: relative; color: #fff; background: ${({ src }) => `url(${src}) center/cover`};
@@ -370,7 +368,7 @@ const DetailHero = styled.section`
   .content { position: relative; z-index: 1; width: 100%; padding: 45px 0 40px; }
   .back { display: inline-flex; margin-bottom: 80px; color: #fff; font-size: 13px; font-weight: 700; opacity: .9; }
   .restaurant-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; }
-  h1 { margin: 0 0 9px; font-family: 'Playfair Display', serif; font-size: clamp(38px, 5vw, 60px); letter-spacing: -1.8px; }
+  h1 { margin: 0 0 9px; font-family: 'Roboto', sans-serif; font-size: clamp(38px, 5vw, 60px); letter-spacing: -1.8px; }
   p { margin: 0; color: rgba(255,255,255,.82); max-width: 580px; font-size: 14px; }
   .restaurant-meta { display: flex; gap: 18px; margin-top: 20px; font-size: 13px; font-weight: 600; }
   @media (max-width: 650px) { min-height: 340px; .back { margin-bottom: 55px; } .restaurant-heading { display: block; } }
@@ -384,7 +382,7 @@ const DetailMain = styled.main`
 
 const ProductSection = styled.section`
   margin-bottom: 48px;
-  h2 { font-family: 'Playfair Display', serif; font-size: 28px; margin: 0 0 18px; letter-spacing: -.7px; }
+  h2 { font-family: 'Roboto', sans-serif; font-size: 28px; margin: 0 0 18px; letter-spacing: -.7px; }
 `
 
 const ProductRow = styled.div`
@@ -430,7 +428,7 @@ function RestaurantPage() {
   const restaurant = restaurants.find((item) => item.id === id) || restaurants[0]
   const { addItem } = useCart()
   const [added, setAdded] = useState('')
-  return <Page><HeaderBar /><DetailHero src={restaurant.cover}><Shell><div className="content"><Link className="back" to="/">← Voltar para restaurantes</Link><div className="restaurant-heading"><div><h1>{restaurant.name}</h1><p>{restaurant.description}</p><div className="restaurant-meta"><span>★ {restaurant.rating}</span><span>◷ {restaurant.time}</span><span>⌁ {restaurant.delivery}</span></div></div></div></div></Shell></DetailHero><DetailMain><Shell><div className="detail-layout"><div>{restaurant.sections.map((section) => <ProductSection key={section.title}><Eyebrow>{restaurant.category}</Eyebrow><h2>{section.title}</h2>{section.items.map((product) => <ProductRow key={product.id} src={product.image}><div className="image" /><div className="copy"><h3>{product.name}</h3><p>{product.description}</p><span className="price">{money(product.price)}</span></div><button type="button" onClick={() => { addItem(restaurant, product); setAdded(product.id); setTimeout(() => setAdded(''), 1600) }} aria-label={`Adicionar ${product.name}`}>+</button></ProductRow>)}</ProductSection>)}</div><OrderSummary /></div></Shell></DetailMain>{added && <Toast>✓ Adicionado ao seu pedido</Toast>}</Page>
+  return <Page><HeaderBar /><DetailHero src={restaurant.cover}><Shell><div className="content"><Link className="back" to="/">← Voltar para restaurantes</Link><div className="restaurant-heading"><div><h1>{restaurant.name}</h1><p>{restaurant.description}</p><div className="restaurant-meta"><span>{restaurant.rating}</span><span>◷ {restaurant.time}</span><span>⌁ {restaurant.delivery}</span></div></div></div></div></Shell></DetailHero><DetailMain><Shell><div className="detail-layout"><div>{restaurant.sections.map((section) => <ProductSection key={section.title}><Eyebrow>{restaurant.category}</Eyebrow><h2>{section.title}</h2>{section.items.map((product) => <ProductRow key={product.id} src={product.image}><div className="image" /><div className="copy"><h3>{product.name}</h3><p>{product.description}</p><span className="price">{money(product.price)}</span></div><button type="button" onClick={() => { addItem(restaurant, product); setAdded(product.id); setTimeout(() => setAdded(''), 1600) }} aria-label={`Adicionar ${product.name}`}>+</button></ProductRow>)}</ProductSection>)}</div><OrderSummary /></div></Shell></DetailMain>{added && <Toast>✓ Adicionado ao seu pedido</Toast>}</Page>
 }
 
 const Toast = styled.div`
@@ -440,7 +438,7 @@ const Toast = styled.div`
 const CheckoutLayout = styled.main`
   padding: 64px 0 100px;
   .grid { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 65px; align-items: start; }
-  h1 { font-family: 'Playfair Display', serif; font-size: clamp(36px, 5vw, 56px); margin: 0 0 8px; letter-spacing: -1.5px; }
+  h1 { font-family: 'Roboto', sans-serif; font-size: clamp(36px, 5vw, 56px); margin: 0 0 8px; letter-spacing: -1.5px; }
   .intro { color: #8b7d76; font-size: 14px; margin: 0 0 32px; }
   @media (max-width: 850px) { .grid { grid-template-columns: 1fr; gap: 32px; } }
 `
