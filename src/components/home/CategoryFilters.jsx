@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { categories } from '../../data/restaurants'
 
 const Row = styled.div`display: flex; gap: 12px; overflow-x: auto; padding: 2px 0 8px; margin-bottom: 62px; scrollbar-width: none; &::-webkit-scrollbar { display: none; }`
 const Category = styled(Link)`
@@ -9,6 +8,6 @@ const Category = styled(Link)`
   .emoji { font-size: 18px; }
 `
 
-export function CategoryFilters({ activeCategory }) {
-  return <Row>{categories.map((category) => <Category key={category.label} to={category.label === 'Todos' ? '/' : `/?category=${encodeURIComponent(category.label)}`} className={activeCategory === category.label ? 'selected' : ''}>{category.emoji && <span className="emoji">{category.emoji}</span>}{category.label}</Category>)}</Row>
+export function CategoryFilters({ categories, activeCategory }) {
+  return <Row>{categories.map((category) => <Category key={category} to={category === 'Todos' ? '/' : `/?category=${encodeURIComponent(category)}`} className={activeCategory === category ? 'selected' : ''}>{category}</Category>)}</Row>
 }

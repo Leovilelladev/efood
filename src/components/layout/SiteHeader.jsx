@@ -23,7 +23,7 @@ export function SiteHeader() {
   const navigate = useNavigate()
   return <Header><HeaderInner>
     <Logo to="/">efood</Logo>
-    <HeaderNav><NavLink to="/">Início</NavLink><NavLink to="/?category=Pizza">Restaurantes</NavLink><NavLink to="/checkout">Pedidos</NavLink></HeaderNav>
+    <HeaderNav><NavLink to="/">Início</NavLink><NavLink to="/">Restaurantes</NavLink><NavLink to="/checkout">Pedidos</NavLink></HeaderNav>
     <CartButton type="button" onClick={() => navigate('/checkout')} aria-label="Abrir carrinho"><span className="icon">🛍</span><span>Seu pedido</span>{count > 0 && <span className="badge">{count}</span>}</CartButton>
   </HeaderInner></Header>
 }

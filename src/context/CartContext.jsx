@@ -5,11 +5,11 @@ const CartContext = createContext(null)
 export function CartProvider({ children }) {
   const [items, setItems] = useState([])
 
-  function addItem(restaurant, product) {
+  function addItem(restaurant, product, quantityToAdd = 1) {
     setItems((currentItems) => {
       const existingItem = currentItems.find((item) => item.product.id === product.id)
-      if (existingItem) return currentItems.map((item) => item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item)
-      return [...currentItems, { restaurantId: restaurant.id, restaurantName: restaurant.name, product, quantity: 1 }]
+      if (existingItem) return currentItems.map((item) => item.product.id === product.id ? { ...item, quantity: item.quantity + quantityToAdd } : item)
+      return [...currentItems, { restaurantId: restaurant.id, restaurantName: restaurant.name, product, quantity: quantityToAdd }]
     })
   }
 

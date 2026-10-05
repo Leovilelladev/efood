@@ -30,10 +30,13 @@ npm run preview
 ## O que já está funcionando
 
 - Busca por restaurante ou categoria
-- Lista de restaurantes em destaque
+- Restaurantes e cardápios carregados pela API da EBAC
 - Página com os pratos de cada restaurante
+- Modal para escolher a quantidade e comprar um produto
 - Carrinho de compras
 - Resumo e confirmação do pedido
 - Layout adaptado para telas menores
 
-Por enquanto, os restaurantes e pratos estão cadastrados como dados locais. Assim, o projeto fica fácil de testar e pode receber uma API quando essa etapa fizer sentido.
+Os dados vêm da API pública usada no exercício:
+
+`https://api-ebac.vercel.app/api/efood/restaurantes`
