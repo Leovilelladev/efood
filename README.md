@@ -2,7 +2,7 @@
 
 Projeto desenvolvido durante o exercício da EBAC, a partir do layout do efood no Figma.
 
-A proposta é criar uma experiência simples para encontrar um restaurante, escolher os pratos e montar um pedido pelo celular ou computador.
+A proposta é reproduzir a tela do restaurante apresentada no Figma, com a mesma organização visual, cores, espaçamentos e estados de interação.
 
 ## Tecnologias
 
@@ -29,11 +29,14 @@ npm run preview
 
 ## O que já está funcionando
 
-- Busca por restaurante ou categoria
-- Lista de restaurantes em destaque
-- Página com os pratos de cada restaurante
-- Carrinho de compras
-- Resumo e confirmação do pedido
+- Cabeçalho com textura, navegação e contador do carrinho
+- Home com chamada principal, restaurantes e rodapé
+- Hero do restaurante La Dolce Vita Trattoria
+- Grade responsiva com seis cards de Pizza Marguerita
+- Modal de detalhes do produto
+- Carrinho lateral com total do pedido
 - Layout adaptado para telas menores
 
-Por enquanto, os restaurantes e pratos estão cadastrados como dados locais. Assim, o projeto fica fácil de testar e pode receber uma API quando essa etapa fizer sentido.
+Os restaurantes e pratos estão cadastrados como dados locais para facilitar a avaliação visual e o teste das interações.
+
+A home fica em `/` e a tela do restaurante em `/restaurant/la-dolce-vita-trattoria`.
