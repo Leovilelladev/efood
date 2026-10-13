@@ -1,23 +1,44 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { Button } from '../ui/Button'
 
 const Card = styled.article`
-  position: relative; overflow: hidden; border: 1px solid #f0e5e0; border-radius: 18px; background: #fff; transition: transform .2s, box-shadow .2s;
-  &:hover { transform: translateY(-5px); box-shadow: 0 16px 36px rgba(73, 36, 24, .1); }
-  .cover { height: 180px; position: relative; background: ${({ src }) => `url(${src}) center/cover`}; }
-  .cover::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 35%, rgba(24, 10, 10, .2)); }
-  .delivery { position: absolute; z-index: 1; top: 12px; left: 12px; padding: 6px 9px; border-radius: 6px; background: #fff; color: #2e8a65; font-size: 11px; font-weight: 700; }
-  .heart { position: absolute; z-index: 2; top: 11px; right: 11px; width: 32px; height: 32px; display: grid; place-items: center; border: 0; border-radius: 50%; background: rgba(255,255,255,.92); font-size: 16px; }
-  .info { padding: 17px 17px 18px; }
-  h3 { margin: 0 0 7px; font-size: 17px; letter-spacing: -.35px; }
-  p { min-height: 35px; margin: 0 0 16px; color: #897c76; font-size: 12px; line-height: 1.45; }
-  .meta { display: flex; gap: 12px; color: #766b67; font-size: 12px; font-weight: 600; }
+  min-width: 0;
+  .cover { position: relative; height: 217px; }
+  .cover > img { width: 100%; height: 217px; object-fit: cover; }
+  .tags { position: absolute; top: 16px; right: 16px; display: flex; gap: 8px; }
+  .featured { width: 121px; }
+  .tag { min-width: 61px; height: 26px; display: grid; place-items: center; padding: 6px 4px; color: var(--cream); background: var(--salmon); font-size: 12px; line-height: 14px; font-weight: 700; }
+  .info { height: 181px; padding: 8px 7px 7px; border: 1px solid var(--salmon); border-top: 0; background: #fff; }
+  .title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 21px; }
+  h2 { margin: 0 0 0 -1px; font-size: 18px; font-weight: 700; line-height: 21px; }
+  .rating { display: flex; flex-shrink: 0; align-items: center; gap: 8px; font-size: 18px; font-weight: 700; line-height: 21px; }
+  .description { height: 88px; margin: 16px 0; font-size: 14px; line-height: 22px; white-space: pre-line; }
+  @media (max-width: 1055px) {
+    .info { height: auto; min-height: 181px; }
+    .title-row { height: auto; align-items: start; }
+    .description { height: auto; min-height: 88px; white-space: normal; }
+  }
 `
 
 export function RestaurantCard({ restaurant }) {
-  const deliveryLabel = restaurant.delivery === 'Grátis' ? 'Entrega grátis' : restaurant.delivery
-  return <Card src={restaurant.cover}><Link to={`/restaurant/${restaurant.id}`} aria-label={`Abrir ${restaurant.name}`}>
-    <div className="cover"><span className="delivery">{deliveryLabel}</span><button className="heart" type="button" aria-label="Favoritar" onClick={(event) => event.preventDefault()}>♡</button></div>
-    <div className="info"><h3>{restaurant.name}</h3><p>{restaurant.description}</p><div className="meta"><span>{restaurant.rating}</span><span>◷ {restaurant.time}</span><span>{restaurant.category}</span></div></div>
-  </Link></Card>
+  return <Card>
+    <div className="cover">
+      <img src={restaurant.cover} alt={restaurant.name} />
+      <div className="tags">
+        {restaurant.featured && <span className="tag featured">Destaque da semana</span>}
+        <span className="tag">{restaurant.category}</span>
+      </div>
+    </div>
+    <div className="info">
+      <div className="title-row">
+        <h2>{restaurant.name}</h2>
+        <span className="rating" aria-label={`Avaliação ${restaurant.rating}`}>
+          {restaurant.rating}<img src="/figma/estrela.svg" alt="" />
+        </span>
+      </div>
+      <p className="description">{restaurant.description}</p>
+      <Button as={Link} $primary to={`/restaurant/${restaurant.id}`}>Saiba mais</Button>
+    </div>
+  </Card>
 }

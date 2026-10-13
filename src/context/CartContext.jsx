@@ -24,7 +24,7 @@ export function CartProvider({ children }) {
   function clearCart() { setItems([]) }
 
   const subtotal = items.reduce((total, item) => total + item.product.price * item.quantity, 0)
-  const delivery = items.length ? (subtotal >= 70 ? 0 : 5.9) : 0
+  const delivery = 0
   const total = subtotal + delivery
   const count = items.reduce((totalItems, item) => totalItems + item.quantity, 0)
   const value = useMemo(() => ({ items, addItem, updateItem, clearCart, subtotal, delivery, total, count }), [items, subtotal, delivery, total, count])

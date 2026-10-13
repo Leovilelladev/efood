@@ -1,18 +1,27 @@
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Shell } from '../../styles/global'
 
 const Hero = styled.section`
-  min-height: 390px; display: flex; align-items: end; position: relative; color: #fff; background: ${({ src }) => `url(${src}) center/cover`};
-  &::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(37, 14, 14, .08), rgba(37, 14, 14, .82)); }
-  .content { position: relative; z-index: 1; width: 100%; padding: 45px 0 40px; }
-  .back { display: inline-flex; margin-bottom: 80px; color: #fff; font-size: 13px; font-weight: 700; opacity: .9; }
-  h1 { margin: 0 0 9px; font-size: clamp(38px, 5vw, 60px); letter-spacing: -1.8px; }
-  p { max-width: 580px; margin: 0; color: rgba(255,255,255,.82); font-size: 14px; }
-  .restaurant-meta { display: flex; gap: 18px; margin-top: 20px; font-size: 13px; font-weight: 600; }
-  @media (max-width: 650px) { min-height: 340px; .back { margin-bottom: 55px; } }
+  position: relative;
+  height: 280px;
+  color: #fff;
+  > img { width: 100%; height: 100%; object-fit: cover; }
+  &::after { content: ''; position: absolute; inset: 0; background: rgb(0 0 0 / 50%); }
+`
+
+const Content = styled(Shell)`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transform: translateX(-1px);
+  .category { position: absolute; top: 25px; font-size: 32px; font-weight: 100; }
+  h1 { position: absolute; bottom: 32px; height: 33.25px; margin: 0; font-size: 32px; font-weight: 900; }
+  @media (max-width: 600px) { h1 { height: auto; font-size: 28px; } }
 `
 
 export function RestaurantHero({ restaurant }) {
-  return <Hero src={restaurant.cover}><Shell><div className="content"><Link className="back" to="/">← Voltar para restaurantes</Link><h1>{restaurant.name}</h1><p>{restaurant.description}</p><div className="restaurant-meta"><span>{restaurant.rating}</span><span>◷ {restaurant.time}</span><span>⌁ {restaurant.delivery}</span></div></div></Shell></Hero>
+  return <Hero>
+    <img src={restaurant.cover} alt="" />
+    <Content><span className="category">{restaurant.category}</span><h1>{restaurant.name}</h1></Content>
+  </Hero>
 }

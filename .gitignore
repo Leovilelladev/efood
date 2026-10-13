@@ -4,3 +4,5 @@ dist
 .env
 .env.*
 !.env.example
+outputs/visual-check/
+outputs/font-comparison/

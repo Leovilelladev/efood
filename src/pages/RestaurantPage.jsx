@@ -1,46 +1,57 @@
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useCart } from '../context/CartContext'
-import { useRestaurants } from '../hooks/useRestaurants'
+import { getFigmaRestaurant, trattoria } from '../data/figmaRestaurants'
 import { Page, Shell } from '../styles/global'
 import { SiteHeader } from '../components/layout/SiteHeader'
-import { OrderSummary } from '../components/cart/OrderSummary'
-import { Toast } from '../components/feedback/Toast'
+import { SiteFooter } from '../components/layout/SiteFooter'
+import { CartDrawer } from '../components/cart/CartDrawer'
 import { ProductModal } from '../components/restaurant/ProductModal'
-import { ProductSection } from '../components/restaurant/ProductSection'
+import { ProductCard } from '../components/restaurant/ProductCard'
 import { RestaurantHero } from '../components/restaurant/RestaurantHero'
-import { StatusMessage } from '../components/ui/StatusMessage'
+import { Button } from '../components/ui/Button'
 
 const Main = styled.main`
-  padding: 62px 0 110px;
-  .detail-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 68px; align-items: start; }
-  @media (max-width: 850px) { .detail-layout { grid-template-columns: 1fr; gap: 30px; } }
+  padding: 56px 0 120px;
+  @media (max-width: 600px) { padding: 40px 0 72px; }
 `
 
-export function RestaurantPage() {
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+  @media (max-width: 1055px) { grid-template-columns: repeat(2, minmax(0, 320px)); justify-content: center; }
+  @media (max-width: 700px) { grid-template-columns: minmax(0, 320px); }
+`
+
+export function RestaurantPage({ checkout = false }) {
   const { id } = useParams()
-  const { restaurants, loading, error } = useRestaurants()
+  const restaurant = getFigmaRestaurant(checkout ? trattoria.id : id)
   const { addItem } = useCart()
   const [selectedProduct, setSelectedProduct] = useState(null)
-  const [addedProduct, setAddedProduct] = useState('')
-  const restaurant = restaurants.find((item) => item.id === id)
+  const [cartOpen, setCartOpen] = useState(checkout)
+  const products = restaurant?.sections.flatMap((section) => section.items) || []
 
   function handleConfirm(restaurantData, product, quantity) {
     addItem(restaurantData, product, quantity)
     setSelectedProduct(null)
-    setAddedProduct(product.name)
-    window.setTimeout(() => setAddedProduct(''), 1600)
+    setCartOpen(true)
   }
 
-  return <Page><SiteHeader />
-    {loading && <Main><Shell><StatusMessage>Carregando o cardápio...</StatusMessage></Shell></Main>}
-    {!loading && (error || !restaurant) && <Main><Shell><StatusMessage>{error || 'Restaurante não encontrado.'}</StatusMessage></Shell></Main>}
-    {!loading && !error && restaurant && <>
-      <RestaurantHero restaurant={restaurant} />
-      <Main><Shell><div className="detail-layout"><div>{restaurant.sections.map((section) => <ProductSection key={section.title} category={restaurant.category} section={section} onBuy={setSelectedProduct} />)}</div><OrderSummary /></div></Shell></Main>
-    </>}
-    {selectedProduct && restaurant && <ProductModal restaurant={restaurant} product={selectedProduct} onClose={() => setSelectedProduct(null)} onConfirm={handleConfirm} />}
-    {addedProduct && <Toast>{addedProduct} adicionado ao pedido</Toast>}
+  return <Page>
+    <SiteHeader onOpenCart={() => setCartOpen(true)} />
+    {restaurant && <RestaurantHero restaurant={restaurant} />}
+    <Main><Shell>
+      {products.length > 0 ? <Grid>{products.map((product) =>
+        <ProductCard key={product.id} product={product} onOpen={setSelectedProduct} />
+      )}</Grid> : <>
+        <p>{restaurant ? 'O cardápio deste restaurante ainda não está disponível.' : 'Restaurante não encontrado.'}</p>
+        <Button as={Link} $primary to="/">Voltar aos restaurantes</Button>
+      </>}
+    </Shell></Main>
+    <SiteFooter profile />
+    {selectedProduct && <ProductModal restaurant={restaurant} product={selectedProduct} onClose={() => setSelectedProduct(null)} onConfirm={handleConfirm} />}
+    {cartOpen && <CartDrawer initialStep={checkout ? 'delivery' : 'cart'} onClose={() => setCartOpen(false)} />}
   </Page>
 }
