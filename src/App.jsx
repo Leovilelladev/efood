@@ -4,7 +4,7 @@ import { CartProvider } from './context/CartContext'
 import { GlobalStyle } from './styles/global'
 import { CheckoutPage } from './pages/CheckoutPage'
 import { HomePage } from './pages/HomePage'
-import { RestaurantPage } from './pages/RestaurantPage'
+import { RestaurantMenuPage } from './pages/RestaurantMenuPage'
 
 export function App() {
   const { pathname } = useLocation()
@@ -15,7 +15,7 @@ export function App() {
     <GlobalStyle />
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/restaurant/:id" element={<RestaurantPage />} />
+      <Route path="/restaurant/:id" element={<RestaurantMenuPage />} />
       <Route path="/checkout" element={<CheckoutPage />} />
       <Route path="*" element={<HomePage />} />
     </Routes>
