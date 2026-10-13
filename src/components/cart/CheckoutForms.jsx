@@ -29,7 +29,7 @@ export function DeliveryForm({ value, onBack, onContinue }) {
   return <>
     <PanelTitle id="cart-title">Entrega</PanelTitle>
     <Form onSubmit={submit}>
-      <label>Quem irá receber<input name="receiver" autoComplete="name" required defaultValue={value.receiver} placeholder="João Paulo de Souza" /></label>
+      <label>Quem irá receber<input name="receiver" autoComplete="name" required defaultValue={value.receiver ?? 'João Paulo de Souza'} /></label>
       <label>Endereço<input name="address" autoComplete="address-line1" required defaultValue={value.address} /></label>
       <label>Cidade<input name="city" autoComplete="address-level2" required defaultValue={value.city} /></label>
       <div className="row">
@@ -45,25 +45,28 @@ export function DeliveryForm({ value, onBack, onContinue }) {
   </>
 }
 
-export function PaymentForm({ total, onBack, onConfirm }) {
+export function PaymentForm({ total, value, onChange, onBack, onConfirm }) {
+  function updateField(event) {
+    onChange({ ...value, [event.target.name]: event.target.value })
+  }
+
   function submit(event) {
     event.preventDefault()
     // O exercício simula a compra localmente; nenhum dado de cartão é enviado ou salvo.
-    event.currentTarget.reset()
     onConfirm()
   }
 
   return <>
     <PanelTitle id="cart-title">Pagamento - Valor a pagar {money(total)}</PanelTitle>
     <Form onSubmit={submit} autoComplete="off">
-      <label>Nome no cartão<input name="cardName" required placeholder="João Paulo de Souza" /></label>
+      <label>Nome no cartão<input name="cardName" required value={value.cardName ?? ''} onChange={updateField} /></label>
       <div className="row card-row">
-        <label>Número do cartão<input name="cardNumber" inputMode="numeric" pattern="(?:[0-9] ?){12,18}[0-9]" maxLength={23} required title="Informe entre 13 e 19 dígitos" /></label>
-        <label>CVV<input name="cvv" type="password" inputMode="numeric" pattern="[0-9]{3,4}" maxLength={4} required /></label>
+        <label>Número do cartão<input name="cardNumber" inputMode="numeric" pattern="(?:[0-9] ?){12,18}[0-9]" maxLength={23} required title="Informe entre 13 e 19 dígitos" value={value.cardNumber ?? ''} onChange={updateField} /></label>
+        <label>CVV<input name="cvv" type="password" inputMode="numeric" pattern="[0-9]{3,4}" maxLength={4} required value={value.cvv ?? ''} onChange={updateField} /></label>
       </div>
       <div className="row">
-        <label>Mês de vencimento<input name="month" inputMode="numeric" pattern="0?[1-9]|1[0-2]" maxLength={2} required title="Informe um mês de 1 a 12" /></label>
-        <label>Ano de vencimento<input name="year" inputMode="numeric" pattern="[0-9]{4}" maxLength={4} required title="Informe o ano com quatro dígitos" /></label>
+        <label>Mês de vencimento<input name="month" inputMode="numeric" pattern="0?[1-9]|1[0-2]" maxLength={2} required title="Informe um mês de 1 a 12" value={value.month ?? ''} onChange={updateField} /></label>
+        <label>Ano de vencimento<input name="year" inputMode="numeric" pattern="[0-9]{4}" maxLength={4} required title="Informe o ano com quatro dígitos" value={value.year ?? ''} onChange={updateField} /></label>
       </div>
       <div className="actions">
         <Button type="submit">Finalizar pagamento</Button>
@@ -74,8 +77,7 @@ export function PaymentForm({ total, onBack, onConfirm }) {
 }
 
 const Message = styled.div`
-  p { margin: 0 0 22px; font-size: 14px; line-height: 22px; }
-  p:last-of-type { margin-bottom: 24px; }
+  p { margin: 0 0 24px; font-size: 14px; line-height: 22px; }
   button { width: 100%; }
 `
 
@@ -83,10 +85,7 @@ export function OrderConfirmation({ orderId, onFinish }) {
   return <>
     <PanelTitle id="cart-title">Pedido realizado - {orderId}</PanelTitle>
     <Message>
-      <p>Estamos felizes em informar que seu pedido já está em processo de preparação e, em breve, será entregue no endereço fornecido.</p>
-      <p>Gostaríamos de ressaltar que nossos entregadores não estão autorizados a realizar cobranças extras.</p>
-      <p>Lembre-se da importância de higienizar as mãos após o recebimento do pedido, garantindo assim sua segurança e bem-estar durante a refeição.</p>
-      <p>Esperamos que desfrute de uma deliciosa e agradável experiência gastronômica. Bom apetite!</p>
+      <p>Estamos felizes em informar que seu pedido já está em processo de preparação e, em breve, será entregue no endereço fornecido. Gostaríamos de ressaltar que nossos entregadores não estão autorizados a realizar cobranças extras. Lembre-se da importância de higienizar as mãos após o recebimento do pedido, garantindo assim sua segurança e bem-estar durante a refeição. Esperamos que desfrute de uma deliciosa e agradável experiência gastronômica. Bom apetite!</p>
       <Button type="button" onClick={onFinish}>Concluir</Button>
     </Message>
   </>

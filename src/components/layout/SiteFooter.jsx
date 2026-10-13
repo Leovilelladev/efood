@@ -11,6 +11,7 @@ const Footer = styled.footer`
   .brand { display: flex; justify-content: center; transform: translateX(.5px); }
   .socials { display: flex; justify-content: center; gap: 8px; margin-top: 32.5px; }
   p { width: min(480px, calc(100% - 32px)); margin: 80px auto 0; transform: translateX(1px); font-size: 10px; line-height: 12px; }
+  .copyright { margin-top: 6px; font-size: 10px; line-height: 12px; }
 `
 
 export function SiteFooter({ profile = false }) {
@@ -22,5 +23,6 @@ export function SiteFooter({ profile = false }) {
       <img src="/figma/twitter.svg" alt="Twitter" />
     </div>
     <p>A efood é uma plataforma para divulgação de estabelecimentos, a responsabilidade pela entrega, qualidade dos produtos é toda do estabelecimento contratado.</p>
+    <p className="copyright">© 2026 efood</p>
   </Footer>
 }

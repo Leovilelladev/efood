@@ -49,13 +49,15 @@ const Item = styled.div`
 export function CartDrawer({ onClose, initialStep = 'cart' }) {
   const { items, updateItem, total, clearCart } = useCart()
   const [step, setStep] = useState(items.length ? initialStep : 'cart')
-  const [delivery, setDelivery] = useState({})
+  const [delivery, setDelivery] = useState({ receiver: 'João Paulo de Souza' })
+  const [payment, setPayment] = useState({ cardName: 'João Paulo de Souza' })
   const [orderId, setOrderId] = useState('')
   const dialog = useDialog(onClose, step)
 
   function confirmOrder() {
     setOrderId(`DEMO-${Date.now().toString().slice(-6)}`)
     clearCart()
+    setPayment({ cardName: 'João Paulo de Souza' })
     setStep('confirmation')
   }
 
@@ -82,7 +84,7 @@ export function CartDrawer({ onClose, initialStep = 'cart' }) {
         </>}
       </>}
       {step === 'delivery' && <DeliveryForm value={delivery} onBack={() => setStep('cart')} onContinue={(value) => { setDelivery(value); setStep('payment') }} />}
-      {step === 'payment' && <PaymentForm total={total} onBack={() => setStep('delivery')} onConfirm={confirmOrder} />}
+      {step === 'payment' && <PaymentForm total={total} value={payment} onChange={setPayment} onBack={() => setStep('delivery')} onConfirm={confirmOrder} />}
       {step === 'confirmation' && <OrderConfirmation orderId={orderId} onFinish={onClose} />}
     </Drawer>
   </Overlay>
