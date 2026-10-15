@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useCart } from '../context/CartContext'
-import { getFigmaRestaurant, trattoria } from '../data/figmaRestaurants'
+import { trattoria } from '../data/figmaRestaurants'
 import { useRestaurants } from '../hooks/useRestaurants'
 import { Page, Shell } from '../styles/global'
 import { SiteHeader } from '../components/layout/SiteHeader'
@@ -32,7 +32,7 @@ export function RestaurantPage({ checkout = false }) {
   const { restaurants, loading, error, reload } = useRestaurants()
   const restaurant = checkout
     ? trattoria
-    : restaurants.find((item) => item.id === String(id)) || getFigmaRestaurant(id)
+    : restaurants.find((item) => item.id === String(id))
   const { addItem } = useCart()
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [cartOpen, setCartOpen] = useState(checkout)
