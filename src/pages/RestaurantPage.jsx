@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useCart } from '../context/CartContext'
 import { getFigmaRestaurant, trattoria } from '../data/figmaRestaurants'
+import { useRestaurants } from '../hooks/useRestaurants'
 import { Page, Shell } from '../styles/global'
 import { SiteHeader } from '../components/layout/SiteHeader'
 import { SiteFooter } from '../components/layout/SiteFooter'
@@ -11,6 +12,7 @@ import { ProductModal } from '../components/restaurant/ProductModal'
 import { ProductCard } from '../components/restaurant/ProductCard'
 import { RestaurantHero } from '../components/restaurant/RestaurantHero'
 import { Button } from '../components/ui/Button'
+import { StatusMessage } from '../components/ui/StatusMessage'
 
 const Main = styled.main`
   padding: 56px 0 120px;
@@ -27,7 +29,10 @@ const Grid = styled.div`
 
 export function RestaurantPage({ checkout = false }) {
   const { id } = useParams()
-  const restaurant = getFigmaRestaurant(checkout ? trattoria.id : id)
+  const { restaurants, loading, error, reload } = useRestaurants()
+  const restaurant = checkout
+    ? trattoria
+    : restaurants.find((item) => item.id === String(id)) || getFigmaRestaurant(id)
   const { addItem } = useCart()
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [cartOpen, setCartOpen] = useState(checkout)
@@ -42,13 +47,18 @@ export function RestaurantPage({ checkout = false }) {
   return <Page>
     <SiteHeader onOpenCart={() => setCartOpen(true)} />
     {restaurant && <RestaurantHero restaurant={restaurant} />}
-    <Main><Shell>
-      {products.length > 0 ? <Grid>{products.map((product) =>
-        <ProductCard key={product.id} product={product} onOpen={setSelectedProduct} />
-      )}</Grid> : <>
-        <p>{restaurant ? 'O cardápio deste restaurante ainda não está disponível.' : 'Restaurante não encontrado.'}</p>
+    <Main><Shell aria-busy={loading && !restaurant}>
+      {!restaurant && loading && <StatusMessage>Carregando restaurante...</StatusMessage>}
+      {!restaurant && !loading && error && <StatusMessage>
+        {error}<br /><Button type="button" onClick={reload}>Tentar novamente</Button>
+      </StatusMessage>}
+      {!restaurant && !loading && !error && <>
+        <p>Restaurante não encontrado.</p>
         <Button as={Link} $primary to="/">Voltar aos restaurantes</Button>
       </>}
+      {restaurant && products.length > 0 ? <Grid>{products.map((product) =>
+        <ProductCard key={product.id} product={product} onOpen={setSelectedProduct} />
+      )}</Grid> : restaurant && <p>O cardápio deste restaurante ainda não está disponível.</p>}
     </Shell></Main>
     <SiteFooter profile />
     {selectedProduct && <ProductModal restaurant={restaurant} product={selectedProduct} onClose={() => setSelectedProduct(null)} onConfirm={handleConfirm} />}

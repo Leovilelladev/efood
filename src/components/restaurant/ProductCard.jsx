@@ -8,9 +8,9 @@ const Card = styled.article`
   color: var(--cream);
   img { width: 100%; height: 167px; object-fit: cover; }
   h2 { margin: 8px 0; font-size: 16px; line-height: 19px; font-weight: 900; }
-  p { height: 88px; margin: 0 0 8px; font-size: 14px; line-height: 22px; }
+  p { display: -webkit-box; height: 88px; margin: 0 0 8px; overflow: hidden; font-size: 14px; line-height: 22px; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-clamp: 4; }
   button { width: 100%; }
-  @media (max-width: 700px) { p { height: auto; min-height: 88px; } }
+  @media (max-width: 700px) { p { display: block; height: auto; min-height: 88px; overflow: visible; } }
 `
 
 export function ProductCard({ product, onOpen }) {

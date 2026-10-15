@@ -13,11 +13,11 @@ const Card = styled.article`
   .title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 21px; }
   h2 { margin: 0 0 0 -1px; font-size: 18px; font-weight: 700; line-height: 21px; }
   .rating { display: flex; flex-shrink: 0; align-items: center; gap: 8px; font-size: 18px; font-weight: 700; line-height: 21px; }
-  .description { height: 88px; margin: 16px 0; font-size: 14px; line-height: 22px; white-space: pre-line; }
+  .description { display: -webkit-box; height: 88px; margin: 16px 0; overflow: hidden; font-size: 14px; line-height: 22px; white-space: pre-line; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-clamp: 4; }
   @media (max-width: 1055px) {
     .info { height: auto; min-height: 181px; }
     .title-row { height: auto; align-items: start; }
-    .description { height: auto; min-height: 88px; white-space: normal; }
+    .description { display: block; height: auto; min-height: 88px; overflow: visible; white-space: normal; }
   }
 `
 
