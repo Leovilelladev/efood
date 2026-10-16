@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
-import { CartProvider } from './context/CartContext'
 import { GlobalStyle } from './styles/global'
 import { CheckoutPage } from './pages/CheckoutPage'
 import { HomePage } from './pages/HomePage'
@@ -11,7 +10,7 @@ export function App() {
 
   useEffect(() => { window.scrollTo(0, 0) }, [pathname])
 
-  return <CartProvider>
+  return <>
     <GlobalStyle />
     <Routes>
       <Route path="/" element={<HomePage />} />
@@ -19,5 +18,5 @@ export function App() {
       <Route path="/checkout" element={<CheckoutPage />} />
       <Route path="*" element={<HomePage />} />
     </Routes>
-  </CartProvider>
+  </>
 }

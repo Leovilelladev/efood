@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { money } from '../../data/restaurants'
-import { useCart } from '../../context/CartContext'
+import { useCart } from '../../hooks/useCart'
 
 const Aside = styled.aside`
   position: sticky; top: 99px; padding: 22px; border: 1px solid #ecdfda; border-radius: 16px; background: #fff;

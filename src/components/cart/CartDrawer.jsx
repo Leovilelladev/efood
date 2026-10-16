@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { useCart } from '../../context/CartContext'
+import { useCart } from '../../hooks/useCart'
 import { money } from '../../data/restaurants'
 import { useDialog } from '../../hooks/useDialog'
 import { Button } from '../ui/Button'

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { useCart } from '../context/CartContext'
+import { useCart } from '../hooks/useCart'
 import { trattoria } from '../data/figmaRestaurants'
 import { useRestaurants } from '../hooks/useRestaurants'
 import { Page, Shell } from '../styles/global'
