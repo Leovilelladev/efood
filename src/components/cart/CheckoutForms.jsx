@@ -20,6 +20,13 @@ const Form = styled.form`
   .actions { display: grid; gap: 8px; margin-top: 16px; }
 `
 
+const ErrorMessage = styled.p`
+  margin: 8px 0 0;
+  color: var(--cream);
+  font-size: 13px;
+  line-height: 18px;
+`
+
 export function DeliveryForm({ value, onBack, onContinue }) {
   function submit(event) {
     event.preventDefault()
@@ -45,15 +52,14 @@ export function DeliveryForm({ value, onBack, onContinue }) {
   </>
 }
 
-export function PaymentForm({ total, value, onChange, onBack, onConfirm }) {
+export function PaymentForm({ total, value, onChange, onBack, onConfirm, error, submitting }) {
   function updateField(event) {
     onChange({ ...value, [event.target.name]: event.target.value })
   }
 
   function submit(event) {
     event.preventDefault()
-    // O exercício simula a compra localmente; nenhum dado de cartão é enviado ou salvo.
-    onConfirm()
+    onConfirm(value)
   }
 
   return <>
@@ -68,8 +74,9 @@ export function PaymentForm({ total, value, onChange, onBack, onConfirm }) {
         <label>Mês de vencimento<input name="month" inputMode="numeric" pattern="0?[1-9]|1[0-2]" maxLength={2} required title="Informe um mês de 1 a 12" value={value.month ?? ''} onChange={updateField} /></label>
         <label>Ano de vencimento<input name="year" inputMode="numeric" pattern="[0-9]{4}" maxLength={4} required title="Informe o ano com quatro dígitos" value={value.year ?? ''} onChange={updateField} /></label>
       </div>
+      {error && <ErrorMessage role="alert">{error}</ErrorMessage>}
       <div className="actions">
-        <Button type="submit">Finalizar pagamento</Button>
+        <Button type="submit" disabled={submitting}>{submitting ? 'Enviando pedido...' : 'Finalizar pagamento'}</Button>
         <Button type="button" onClick={onBack}>Voltar para a edição de endereço</Button>
       </div>
     </Form>

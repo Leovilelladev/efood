@@ -6,6 +6,8 @@ import { useDialog } from '../../hooks/useDialog'
 import { Button } from '../ui/Button'
 import { DeliveryForm, OrderConfirmation, PaymentForm } from './CheckoutForms'
 
+const CHECKOUT_URL = 'https://api-ebac.vercel.app/api/efood/checkout'
+
 const Overlay = styled.div`
   position: fixed;
   inset: 0;
@@ -52,13 +54,63 @@ export function CartDrawer({ onClose, initialStep = 'cart' }) {
   const [delivery, setDelivery] = useState({ receiver: 'João Paulo de Souza' })
   const [payment, setPayment] = useState({ cardName: 'João Paulo de Souza' })
   const [orderId, setOrderId] = useState('')
+  const [requestError, setRequestError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
   const dialog = useDialog(onClose, step)
 
-  function confirmOrder() {
-    setOrderId(`DEMO-${Date.now().toString().slice(-6)}`)
-    clearCart()
-    setPayment({ cardName: 'João Paulo de Souza' })
-    setStep('confirmation')
+  async function confirmOrder(paymentData) {
+    setRequestError('')
+    setSubmitting(true)
+
+    const payload = {
+      products: items.flatMap(({ product, quantity }) => Array.from({ length: quantity }, () => ({
+        id: Number(product.id),
+        price: product.price,
+      }))),
+      delivery: {
+        receiver: delivery.receiver,
+        address: {
+          description: delivery.address,
+          city: delivery.city,
+          zipCode: delivery.zip,
+          number: Number(delivery.number),
+          complement: delivery.complement || '',
+        },
+      },
+      payment: {
+        card: {
+          name: paymentData.cardName,
+          number: paymentData.cardNumber.replace(/\D/g, ''),
+          code: Number(paymentData.cvv),
+          expires: {
+            month: Number(paymentData.month),
+            year: Number(paymentData.year),
+          },
+        },
+      },
+    }
+
+    try {
+      const response = await fetch(CHECKOUT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const responseData = await response.json().catch(() => null)
+
+      if (!response.ok) {
+        throw new Error(responseData?.message || 'Não foi possível concluir o pedido.')
+      }
+
+      setOrderId(responseData?.orderId || 'Pedido confirmado')
+      clearCart()
+      setPayment({ cardName: 'João Paulo de Souza' })
+      setStep('confirmation')
+    } catch (error) {
+      setRequestError(error.message || 'Não foi possível concluir o pedido. Tente novamente.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return <Overlay onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}>
@@ -83,8 +135,8 @@ export function CartDrawer({ onClose, initialStep = 'cart' }) {
           <Button className="continue" type="button" onClick={onClose}>Voltar ao cardápio</Button>
         </>}
       </>}
-      {step === 'delivery' && <DeliveryForm value={delivery} onBack={() => setStep('cart')} onContinue={(value) => { setDelivery(value); setStep('payment') }} />}
-      {step === 'payment' && <PaymentForm total={total} value={payment} onChange={setPayment} onBack={() => setStep('delivery')} onConfirm={confirmOrder} />}
+      {step === 'delivery' && <DeliveryForm value={delivery} onBack={() => setStep('cart')} onContinue={(value) => { setRequestError(''); setDelivery(value); setStep('payment') }} />}
+      {step === 'payment' && <PaymentForm total={total} value={payment} onChange={setPayment} onBack={() => setStep('delivery')} onConfirm={confirmOrder} error={requestError} submitting={submitting} />}
       {step === 'confirmation' && <OrderConfirmation orderId={orderId} onFinish={onClose} />}
     </Drawer>
   </Overlay>
